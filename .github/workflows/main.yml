@@ -1,0 +1,28 @@
+name: Build Qt Project
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '>=6.0.*'
+          modules: 'qt5compat'
+
+      - name: Build project
+        run: |
+          mkdir build
+          cd build
+          qmake ../AsduLoader.pro
+          make -j$(nproc)
